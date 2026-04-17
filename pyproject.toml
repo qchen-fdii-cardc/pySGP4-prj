@@ -1,0 +1,17 @@
+[project.optional-dependencies]
+test = ["pytest"]
+[project]
+name = "sgp4-xp-search"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pysgp4*"]
