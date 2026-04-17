@@ -36,3 +36,13 @@ Then you can use the SGP4 library in Python by importing pysgp4.
 TLE (Two-Line Element set) is a data format used to describe the orbit of a satellite. It consists of two lines of text, each containing specific information about the satellite's orbit. The first line contains the satellite's name, its international designator, and the epoch time (the time at which the TLE was generated). The second line contains the satellite's orbital parameters, such as its inclination, right ascension of the ascending node, eccentricity, argument of perigee, mean anomaly, and mean motion.
 
 ![TLE](imgs/tles.png)
+
+## Oribtal Mechanics 甲乙丙
+
+whos knows the law that makes things fall on the ground is the same that makes the moon orbit around the earth, and the earth orbit around the sun?
+
+![gravity](imgs/grav.png)
+
+That's science and truth.
+
+![EOM](imgs/eom.png)
