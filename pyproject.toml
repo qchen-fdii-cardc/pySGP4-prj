@@ -3,8 +3,11 @@ name = "sgp4-xp-search"
 version = "0.1.0"
 description = "Explore sgp4prop"
 readme = "README.md"
-requires-python = ">=3.14"
-dependencies = []
+requires-python = ">=3.13"
+dependencies = [
+    "numpy>=2.4.4",
+    "pytest>=9.0.3",
+]
 
 [build-system]
 requires = ["setuptools>=61.0"]
@@ -15,5 +18,3 @@ where = ["."]
 include = ["pysgp4*"]
 
 
-[project.optional-dependencies]
-test = ["pytest"]

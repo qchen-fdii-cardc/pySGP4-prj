@@ -12,7 +12,7 @@ You need to login to space-track.org to download the SGP4 library. You can creat
 
 And you have to dowanload the [SGP4 library](https://www.space-track.org/documentation#stModal) , and get Lib folder from the downloaded file, and put it in pysgp4 folder. The structure of pysgp4 folder should be like this:
 
-```
+```txt
 pysgp4/
 ├── __init__.py
 ├── Lib
@@ -29,7 +29,7 @@ pysgp4/
         └── libDllMain.dylib
 ```
 
-Then you can use the SGP4 library in Python by importing pysgp4.
+Here with uv manage the python venv, the SGP4 library imported to  Python by importing pysgp4.
 
 ## How orbit is described
 
@@ -46,3 +46,34 @@ whos knows the law that makes things fall on the ground is the same that makes t
 That's science and truth.
 
 ![EOM](imgs/eom.png)
+
+### Orbital Elements
+
+描述一个轨道位置，首先是轨道平面的位置，由
+
+- 轨道倾角 (inclination, i)，轨道平面与赤道平面的夹角，单位是度
+- 升交点赤经 (right ascension of the ascending node, Ω)，升交点是卫星从南向北穿过赤道平面的点，Ω是从春分点到升交点的角度，单位是度
+
+轨道形状由三个参数描述：
+
+- a (semi-major axis)，轨道的半长轴，单位是公里
+- e (eccentricity)，轨道的偏心率，单位是无量纲
+- ω (argument of perigee)，近地点幅角，单位是度
+
+最后，物体在轨道上的位置由一个参数描述：
+
+- M (mean anomaly)，平均近点角，单位是度，或者真近点角 (true anomaly)，单位是度
+
+![orbital elements](imgs/orbit_elements.png)
+
+图中P点就是椭圆（是圆轨道时这个点是认为确定的）上离地球最近的点，叫近地点 (perigee)，轨道上离地球最远的点，叫远地点 (apogee)。
+
+图中的Ω和i描述了轨道平面与赤道平面的位置关系，Ω是从春分点到升交点的角度，i是轨道平面与赤道平面的夹角。
+
+近地点幅角ω是从升交点到近地点的角度，而平均近点角M是从近地点到卫星位置的角度。
+
+这个描述挺好，就是对于e=0的情况，轨道的每个点都是近地点也是远地点，所以近地点幅角ω就没有意义了，平均近点角M也很困扰。
+
+所以，聪明的人又提出另外一个描述的方式，称为春分点六根数。
+
+### Equinoctial Elements
