@@ -2,8 +2,10 @@ from numpy import cos, pi, radians, sin, tan, sqrt
 
 import pysgp4
 from ctypes import *
-from pysgp4.AstroFuncWrapper import XA_EQNX_AG
+from pysgp4 import *
 from pysgp4.AstroUtils import *
+
+from typing import *
 
 # static native int 	AstroFuncInit(long apAddr)
 
@@ -53,7 +55,7 @@ def test_kep_to_eqnx():
     _chi = tan(radians(incli) / 2) * sin(radians(raan))
     _psi = tan(radians(incli) / 2) * cos(radians(raan))
     _L = (omega + raan + m0) % 360
-    MU_EARTH = pysgp4.EnvConst.EnvGetGeoConst(pysgp4.XF_GEOCON_MU)
+    MU_EARTH: float = pysgp4.EnvConst.EnvGetGeoConst(pysgp4.XF_GEOCON_MU)
     assert MU_EARTH == 398600.8
     # Gravitational parameter km ^ 3/(solar s) ^ 2
     _N = sqrt(MU_EARTH / (a ** 3)) * 24 * 60 * 60 / (2 * pi)  # revs per day
@@ -97,8 +99,10 @@ def test_kep_to_eqnx():
     assert eqnx[pysgp4.XA_EQNX_AG] == _Ag
     assert eqnx[pysgp4.XA_EQNX_CHI] == _chi
     assert eqnx[pysgp4.XA_EQNX_PSI] == _psi
-    assert eqnx[pysgp4.XA_EQNX_L] == 30.290628999999992 # _L = 30.290628999999996
-    assert eqnx[pysgp4.XA_EQNX_N] == 0.29733964908070626 # _N = 0.2973396490807063
+    # _L = 30.290628999999996
+    assert eqnx[pysgp4.XA_EQNX_L] == 30.290628999999992
+    # _N = 0.2973396490807063
+    assert eqnx[pysgp4.XA_EQNX_N] == 0.29733964908070626
 
 
 # static native void 	KepToPosVel(double[] xa_kep, double[] pos, double[] vel)
