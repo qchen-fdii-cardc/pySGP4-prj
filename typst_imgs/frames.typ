@@ -204,7 +204,7 @@
 
     #label_at(pt(vscale(0., n_asc)), [Ω], dx: -8pt, dy: 4pt)
     #label_at(pt(vscale(-0.36, h_hat)), [$ i $], dx: -14pt, dy: 20pt)
-    #label_at(pt(vscale(0.52, omega_dir)), [ω], dx: 20pt, dy: -16pt)
+    #label_at(pt(vscale(0.52, omega_dir)), [(ω)], dx: 40pt, dy: -16pt)
 
     #label_at(pt(vadd(r_p, vscale(0.32, u_hat))), [$ u $], color: u_color, dx: 3pt, dy: -5pt)
     #label_at(pt(vadd(r_p, vscale(0.36, v_hat))), [$ v $], color: v_color, dx: 2pt, dy: -2pt)
