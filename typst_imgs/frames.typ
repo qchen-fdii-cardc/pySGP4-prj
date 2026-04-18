@@ -59,7 +59,7 @@
 #let basis_y2 = (1.20, 0.24)
 #let basis_z2 = (0.0, -1.26)
 #let draw_scale = 82pt
-#let origin = (156pt, 152pt)
+#let origin = (134pt, 150pt)
 
 #let add2(a, b) = (a.at(0) + b.at(0), a.at(1) + b.at(1))
 #let sub2(a, b) = (a.at(0) - b.at(0), a.at(1) - b.at(1))
@@ -158,10 +158,15 @@
   let nu = -180deg + i * 1.5deg
   pt(r_vec(nu))
 })
+#let center_ellipse_pts = range(0, 181).map(i => {
+  let t = i * 2deg
+  add2(o2, (108pt * calc.cos(t), 53pt * calc.sin(t)))
+})
 
 #figure(
   alt: "Variable-driven orbital geometry with ECI frame, ascending node, RAAN Omega, and UVW at point P.",
   box(width: 28em, height: 25em)[
+    #polyline(center_ellipse_pts, stroke: 0.85pt + guide_color)
     #polyline(orb_pts, stroke: 1pt + orbit_color)
 
     #draw_arrow((0.0, 0.0, 0.0), x_hat, 1.55, color: axis_color, thickness: 1.15pt, head_len: 9pt, head_w: 6pt)
@@ -197,9 +202,9 @@
     #label_at(add2(pt(r_peri), (10pt, -12pt)), [Perigee])
     // #label_at(add2(pt(r_peri), (8pt, 8pt)), [Orbit])
 
-    #label_at(pt(vscale(0.42, n_asc)), [Ω], dx: -8pt, dy: 4pt)
-    #label_at(pt(vscale(-0.4, h_hat)), [$ i $], dx: 6pt, dy: 0pt)
-    #label_at(pt(vscale(0.52, omega_dir)), [ω], dx: 6pt, dy: -2pt)
+    #label_at(pt(vscale(0., n_asc)), [Ω], dx: -8pt, dy: 4pt)
+    #label_at(pt(vscale(-0.36, h_hat)), [$ i $], dx: -14pt, dy: 20pt)
+    #label_at(pt(vscale(0.52, omega_dir)), [ω], dx: 20pt, dy: -16pt)
 
     #label_at(pt(vadd(r_p, vscale(0.32, u_hat))), [$ u $], color: u_color, dx: 3pt, dy: -5pt)
     #label_at(pt(vadd(r_p, vscale(0.36, v_hat))), [$ v $], color: v_color, dx: 2pt, dy: -2pt)
