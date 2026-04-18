@@ -15,11 +15,21 @@ Given the Keplerian elements:
 
 The position in the perifocal frame:
 
-$ r_p = frac(a (1 - e^2), 1 + e cos nu) $
+$ p = a (1 - e^2) $
+
+$ r_p = frac(p, 1 + e cos nu) $
+
+where $nu$ is the true anomaly. If $M $ is given, first solve Kepler's equation for $E $:
+
+$ M = E - e sin E $
+
+then convert to true anomaly:
+
+$ nu = 2 arctan(sqrt(frac(1 + e, 1 - e)) tan(frac(E, 2))) $
 
 $
   mat(delim: "[", x_p; y_p; z_p)
-  = frac(a (1 - e^2), 1 + e cos nu)
+  = frac(p, 1 + e cos nu)
   mat(delim: "[", cos nu; sin nu; 0)
 $
 
@@ -27,7 +37,7 @@ The velocity in the perifocal frame:
 
 $
   mat(delim: "[", v_(x,p); v_(y,p); v_(z,p))
-  = sqrt(frac(mu, a (1 - e^2)))
+  = sqrt(frac(mu, p))
   mat(delim: "[", -sin nu; e + cos nu; 0)
 $
 
