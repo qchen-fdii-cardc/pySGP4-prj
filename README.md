@@ -31,13 +31,23 @@ pysgp4/
 
 Here with uv manage the python venv, the SGP4 library imported to  Python by importing pysgp4.
 
-## How orbit is described
+### Architecture
+The v9 SGP4 library is composed of several components. Only part of them are not export-controlled, SGP4Prop is source code export-controlled.
+
+![arch](imgs/V9_architect.png)
+
+
+
+
+## Orbital mechanis basics
+
+### How orbit is described
 
 TLE (Two-Line Element set) is a data format used to describe the orbit of a satellite. It consists of two lines of text, each containing specific information about the satellite's orbit. The first line contains the satellite's name, its international designator, and the epoch time (the time at which the TLE was generated). The second line contains the satellite's orbital parameters, such as its inclination, right ascension of the ascending node, eccentricity, argument of perigee, mean anomaly, and mean motion.
 
 ![TLE](imgs/tles.png)
 
-## Oribtal Mechanics 甲乙丙
+### Oribtal Mechanics 甲乙丙
 
 whos knows the law that makes things fall on the ground is the same that makes the moon orbit around the earth, and the earth orbit around the sun?
 
@@ -47,33 +57,61 @@ That's science and truth.
 
 ![EOM](imgs/eom.png)
 
-### Orbital Elements
+#### Orbital Elements
 
-描述一个轨道位置，首先是轨道平面的位置，由
+To describe an orbit, first define the orientation of the orbital plane using:
 
-- 轨道倾角 (inclination, i)，轨道平面与赤道平面的夹角，单位是度
-- 升交点赤经 (right ascension of the ascending node, Ω)，升交点是卫星从南向北穿过赤道平面的点，Ω是从春分点到升交点的角度，单位是度
+- inclination (i): the angle between the orbital plane and the equatorial plane, in degrees
+- right ascension of the ascending node (Ω): the ascending node is where the satellite crosses the equatorial plane from south to north; Ω is the angle from the vernal equinox direction to the ascending node, in degrees
 
-轨道形状由三个参数描述：
+The orbit shape is described by three parameters:
 
-- a (semi-major axis)，轨道的半长轴，单位是公里
-- e (eccentricity)，轨道的偏心率，单位是无量纲
-- ω (argument of perigee)，近地点幅角，单位是度
+- a (semi-major axis): the semi-major axis of the orbit, in kilometers
+- e (eccentricity): orbital eccentricity (dimensionless)
+- ω (argument of perigee): the argument of perigee, in degrees
 
-最后，物体在轨道上的位置由一个参数描述：
+Finally, the object's position on the orbit is described by one parameter:
 
-- M (mean anomaly)，平均近点角，单位是度，或者真近点角 (true anomaly)，单位是度
+- M (mean anomaly): mean anomaly, in degrees, or true anomaly, in degrees
 
 ![orbital elements](imgs/orbit_elements.png)
 
-图中P点就是椭圆（是圆轨道时这个点是认为确定的）上离地球最近的点，叫近地点 (perigee)，轨道上离地球最远的点，叫远地点 (apogee)。
+In the figure, point P is the point on the ellipse closest to Earth (for a circular orbit, this point is conventionally chosen), called the perigee. The farthest point on the orbit is called the apogee.
 
-图中的Ω和i描述了轨道平面与赤道平面的位置关系，Ω是从春分点到升交点的角度，i是轨道平面与赤道平面的夹角。
+In the figure, Ω and i describe how the orbital plane is oriented relative to the equatorial plane. Ω is the angle from the vernal equinox direction to the ascending node, and i is the angle between the orbital plane and the equatorial plane.
 
-近地点幅角ω是从升交点到近地点的角度，而平均近点角M是从近地点到卫星位置的角度。
+The argument of perigee ω is the angle from the ascending node to the perigee, while the mean anomaly M is the angle from the perigee to the satellite's position.
 
-这个描述挺好，就是对于e=0的情况，轨道的每个点都是近地点也是远地点，所以近地点幅角ω就没有意义了，平均近点角M也很困扰。
+This description is useful, but when e=0 every point on the orbit is both perigee and apogee. In that case, ω is undefined, and M also becomes ambiguous.
 
-所以，聪明的人又提出另外一个描述的方式，称为春分点六根数。
+To handle this more robustly, another representation was introduced: the equinoctial elements.
 
-### Equinoctial Elements
+#### Equinoctial Elements
+
+Keplerian elements (`a`, `e`, `i`, `Ω`, `ω`, `M`) are not well defined for circular orbits (e=0) and equatorial orbits (i=0), so the equinoctial elements are introduced to solve this problem. The equinoctial elements are defined as follows:
+
+```python
+# Calculate expected equinoctial elements based on the input Keplerian elements
+_Ag = e * sin(radians(omega + raan))
+_Af = e * cos(radians(omega + raan))
+_chi = tan(radians(incli) / 2) * sin(radians(raan))
+_psi = tan(radians(incli) / 2) * cos(radians(raan))
+_L = (omega + raan + m0) % 360
+MU_EARTH: float = pysgp4.EnvConst.EnvGetGeoConst(pysgp4.XF_GEOCON_MU)
+assert MU_EARTH == 398600.8
+# Gravitational parameter km ^ 3/(solar s) ^ 2
+_N = sqrt(MU_EARTH / (a ** 3)) * 24 * 60 * 60 / (2 * pi)  # revs per day
+```
+
+#### Inertial frame and UVW frame
+
+The UVW frame is a local orbital coordinate system. The u-axis points along the satellite's position vector (radial direction), the w-axis points along the orbital angular momentum vector (orbit normal), and the v-axis completes the right-handed frame. For a circular orbit, the v-axis aligns with the velocity direction; in general it is the in-track direction and is not exactly the same as the velocity vector when the orbit has a radial velocity component.
+
+The following give a definition of the UVW frame from Keplerian elements, the transformation start from Keplerian elements to ECI frame, and then from ECI frame to UVW frame:
+
+![uvw](imgs/uvw.png)
+
+
+where rotation matrices are defined as:
+
+![rotation](imgs/rotation_matrix.png)

@@ -4,6 +4,15 @@ import tempfile
 
 TYPST_IMGS_DIR = "typst_imgs"
 IMGS_DIR = "imgs"
+PAGE_WRAPPER = """#set page(width: 30em, height: auto, margin: 12pt, fill: white)
+#show: body => block(
+    width: 100%,
+    inset: 10pt,
+    stroke: 0.8pt + green,
+    radius: 4pt,
+    body,
+)
+"""
 
 os.makedirs(IMGS_DIR, exist_ok=True)
 
@@ -13,9 +22,8 @@ for filename in os.listdir(TYPST_IMGS_DIR):
         # Read the original .typ file
         with open(typ_path, "r", encoding="utf-8") as f:
             typ_content = f.read()
-        # Prepend the page size directive
-        modified_content = "#set page(width: 30em, height: auto, margin: 0pt)\n" + \
-            typ_content
+        # Prepend the page and border directives.
+        modified_content = PAGE_WRAPPER + typ_content
         # Write to a temporary file
         with tempfile.NamedTemporaryFile("w", suffix=".typ", delete=False, encoding="utf-8") as tmp_file:
             tmp_file.write(modified_content)
