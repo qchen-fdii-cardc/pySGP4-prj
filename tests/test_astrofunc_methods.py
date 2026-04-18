@@ -106,8 +106,34 @@ def test_kep_to_eqnx():
 
 
 # static native void 	KepToPosVel(double[] xa_kep, double[] pos, double[] vel)
+def test_kep_to_pos_vec():
+    for i in [40]:
+        xa = CreateCArray(c_double, [6])
+        pos = CreateCArray(c_double, [3])
+        vel = CreateCArray(c_double, [3])
+        xa[:] = [7000, 0.001, 98.7, i, 250, 0]
+
+        pysgp4.AstroFunc.KepToPosVel(xa, pos, vel)
+
+        assert pos[:] == [-2470.6786434529795, -4796.668166845987, 4451.147991660561]
+        assert vel[:] == [0.839682234624599, 4.864101668605924, 5.715389883948284]
 
 # static native void 	KepToUVW(double[] xa_kep, double[] uBar, double[] vBar, double[] wBar)
+def test_kep_to_uvw():
+    xa = CreateCArray(c_double, [6])
+    uBar = CreateCArray(c_double, [3])
+    vBar = CreateCArray(c_double, [3])
+    wBar = CreateCArray(c_double, [3])
+    xa[:] = [7000, 0.001, 98.7, 40, 250, 0]
+
+    pysgp4.AstroFunc.KepToUVW(xa, uBar, vBar, wBar)
+
+    assert uBar[:] == [-0.35322453149968863, -0.6857633510871137, 0.636365505548971]
+    assert vBar[:] == [0.11141639095317687, 0.6445364847868799, 0.756411995942384]
+    assert wBar[:] == [-0.928880411126101, 0.33808482084285313, -0.15126082024721924]
+    # print("uBar:", uBar[:])
+    # print("vBar:", vBar[:])
+    # print("wBar:", wBar[:])
 
 # static native void 	ClassToEqnx(double[] xa_cls, double[] xa_eqnx)
 

@@ -59,6 +59,7 @@ class Sgp4Prop_Simple(object):
         step = 0
         ds50UTC.value = startTime
 
+        print("10 Days")
         # propagate for 10 days from start time with 0.5 day step size
         while (ds50UTC.value < stopTime):
             ds50UTC.value = startTime + (step * 0.5)
@@ -71,6 +72,7 @@ class Sgp4Prop_Simple(object):
             print("%17.7f%17.7f%17.7f%17.7f%17.7f%17.7f%17.7f" %
                   (ds50UTC.value, pos[0], pos[1], pos[2], vel[0], vel[1], vel[2]))
 
+        print("MSE - 30 days")
         # propagate using minutes since satellite's epoch
         # propagate for 30 days since satellite's epoch with 1 day (1440 minutes) step size
         for mse in range(0, (30*1440), 1440):
