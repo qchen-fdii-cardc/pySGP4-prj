@@ -45,6 +45,11 @@ def test_Load_file():
 
 
 def test_log_file():
-    filename = create_string_buffer(b"test_log.txt", 256)
-    retValue = sgp4.OpenLogFile(filename)
+    # filename = create_string_buffer(b"test_log.txt", 256)
+    retValue = sgp4.OpenLogFile(b"test_log.txt")
     assert retValue == 0  # successfully set log file
+
+    sgp4.LogMessage(b"Test log message from Python")
+    sgp4.LogMessage(b"Another log message")
+    # make sure do this
+    sgp4.CloseLogFile()
