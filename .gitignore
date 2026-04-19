@@ -11,3 +11,8 @@
 **/.venv/*
 **/__pycache__/*
 **/Lib/*
+*.pdf
+**/connected-*/*
+**/not_available/*
+**/tles/*
+Sgp4Prop_*.zip
