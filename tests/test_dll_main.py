@@ -1,8 +1,7 @@
 import tempfile
 from pysgp4.AstroUtils import CreateCArray, c_double
-import pysgp4
+import pysgp4 as sgp4
 from ctypes import create_string_buffer
-sgp4 = pysgp4.DllMain
 
 
 def test_dll_main_init():
@@ -46,10 +45,17 @@ def test_Load_file():
 
 def test_log_file():
     # filename = create_string_buffer(b"test_log.txt", 256)
-    retValue = sgp4.OpenLogFile(b"test_log.txt")
+    fn = b"test_log.txt"
+    retValue = sgp4.OpenLogFile(fn)
     assert retValue == 0  # successfully set log file
 
     sgp4.LogMessage(b"Test log message from Python")
     sgp4.LogMessage(b"Another log message")
     # make sure do this
     sgp4.CloseLogFile()
+
+    # test content of log file
+    with open(fn, "r") as f:
+        log_content = f.read()
+        assert "Test log message from Python" in log_content
+        assert "Another log message" in log_content

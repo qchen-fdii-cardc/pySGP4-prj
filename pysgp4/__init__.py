@@ -1,37 +1,27 @@
-from . import AstroUtils
+from .AstroUtils import *
 import platform
-import sys
 import os
 
-
-# from .AofWrapper import *
-from .AstroFuncWrapper import *
-# from .BamWrapper import *
-# from .BatchDCWrapper import *
-# from .ComboWrapper import *
+# Constants defined in wrappers
 from .DllMainWrapper import *
-# from .ElCompWrapper import *
-from .ElOpsWrapper import *
 from .EnvConstWrapper import *
+from .TimeFuncWrapper import *
+from .AstroFuncWrapper import *
 from .ExtEphemWrapper import *
-# from .FovWrapper import *
-# from .LamodWrapper import *
-# from .ObsOpsWrapper import *
-from .ObsWrapper import *
-# from .RotasWrapper import *
-# from .SaasWrapper import *
-from .SatStateWrapper import *
+from .TleWrapper import *
+from .SpVecWrapper import *
+from .VcmWrapper import *
 from .SensorWrapper import *
 from .Sgp4PropWrapper import *
-# from .SpPropWrapper import *
-from .SpVecWrapper import *
-from .TimeFuncWrapper import *
-from .TleWrapper import *
-from .VcmWrapper import *
+from .ElOpsWrapper import *
+from .SatStateWrapper import *
+from .ObsWrapper import *
+
+# Dealing with DLL files
 
 
-# pysgp4: Expose wrappers as submodules/aliases for lazy DLL loading and clean usage
 def _add_dll_dir():
+    """Adds the appropriate DLL directory to the system path based on the current platform."""
     if platform.system() == "Windows":
         dll_dir = os.path.join(os.path.dirname(__file__), "Lib", "Windows")
         os.add_dll_directory(dll_dir)
@@ -49,52 +39,31 @@ def _add_dll_dir():
 
 _add_dll_dir()
 
-# Aliases for user-friendly access (e.g., pysgp4.Aof, pysgp4.AstroUtils, ...)
+# Load DLLs and assign to module-level variables for easier access
+DllMain = LoadDllMainDll()
+EnvConst = LoadEnvConstDll()
+TimeFunc = LoadTimeFuncDll()
+AstroFunc = LoadAstroFuncDll()
+ExtEphem = LoadExtEphemDll()
+Tle = LoadTleDll()
+SpVec = LoadSpVecDll()
+Vcm = LoadVcmDll()
+Sensor = LoadSensorDll()
+Sgp4Prop = LoadSgp4PropDll()
+ElOps = LoadElOpsDll()
+SatState = LoadSatStateDll()
+Obs = LoadObsDll()
+
+# Define __getattr__ to allow direct access to functions in the DLLs without needing to specify the module
 
 
-# change the behavior of pysgp4.aof to return AofWrapper.LoadAofDll() instead of the module itself, so that the DLL will be loaded when the user accesses pysgp4.aof for the first time
-
-# Python 3.7+ module-level __getattr__ for lazy DLL loading
 def __getattr__(name):
+    """Allows direct access to functions in the DLLs without needing to specify the module."""
     if name in globals():
         return globals()[name]
-    if name == "AstroFunc":
-        sys.modules[__name__].AstroFunc = LoadAstroFuncDll()
-        return sys.modules[__name__].AstroFunc
-    if name == "DllMain":
-        sys.modules[__name__].DllMain = LoadDllMainDll()
-        return sys.modules[__name__].DllMain
-    if name == "ElOps":
-        sys.modules[__name__].ElOps = LoadElOpsDll()
-        return sys.modules[__name__].ElOps
-    if name == "EnvConst":
-        sys.modules[__name__].EnvConst = LoadEnvConstDll()
-        return sys.modules[__name__].EnvConst
-    if name == "ExtEphem":
-        sys.modules[__name__].ExtEphem = LoadExtEphemDll()
-        return sys.modules[__name__].ExtEphem
-    if name == "Obs":
-        sys.modules[__name__].Obs = LoadObsDll()
-        return sys.modules[__name__].Obs
-    if name == "SatState":
-        sys.modules[__name__].SatState = LoadSatStateDll()
-        return sys.modules[__name__].SatState
-    if name == "Sensor":
-        sys.modules[__name__].Sensor = LoadSensorDll()
-        return sys.modules[__name__].Sensor
-    if name == "Sgp4Prop":
-        sys.modules[__name__].Sgp4Prop = LoadSgp4PropDll()
-        return sys.modules[__name__].Sgp4Prop
-    if name == "SpVec":
-        sys.modules[__name__].SpVec = LoadSpVecDll()
-        return sys.modules[__name__].SpVec
-    if name == "TimeFunc":
-        sys.modules[__name__].TimeFunc = LoadTimeFuncDll()
-        return sys.modules[__name__].TimeFunc
-    if name == "Tle":
-        sys.modules[__name__].Tle = LoadTleDll()
-        return sys.modules[__name__].Tle
-    if name == "Vcm":
-        sys.modules[__name__].Vcm = LoadVcmDll()
-        return sys.modules[__name__].Vcm
+    modules = [DllMain, EnvConst, TimeFunc, AstroFunc, ExtEphem,
+               Tle, SpVec, Vcm, Sensor, Sgp4Prop, ElOps, SatState, Obs]
+    for module in modules:
+        if hasattr(module, name):
+            return getattr(module, name)
     raise AttributeError(f"module 'pysgp4' has no attribute '{name}'")

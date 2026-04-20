@@ -31,14 +31,6 @@ pysgp4/
 
 Here with uv manage the python venv, the SGP4 library imported to  Python by importing pysgp4.
 
-### Architecture
-The v9 SGP4 library is composed of several components. Only part of them are not export-controlled, SGP4Prop is source code export-controlled.
-
-![arch](imgs/V9_architect.png)
-
-
-
-
 ## Orbital mechanis basics
 
 ### How orbit is described
@@ -113,7 +105,73 @@ The following give a definition of the UVW frame from Keplerian elements, the tr
 
 ![uvw](imgs/uvw.png)
 
-
 where rotation matrices are defined as:
 
 ![rotation](imgs/rotation_matrix.png)
+
+## API of SGP4Prop
+
+### Architecture
+
+The v9 SGP4 library is composed of several components. Only part of them are not export-controlled, SGP4Prop is source code export-controlled.
+
+![arch](imgs/V9_architect.png)
+
+### DllMain
+
+#### Logging
+
+The SGP4 library provides a logging mechanism that allows users to log messages at different levels (e.g., debug, info, warning, error). The logging can be configured to output to the console or to a file. The following code snippet shows how to configure logging in the SGP4 library:
+
+```python
+# filename = create_string_buffer(b"test_log.txt", 256)
+fn = b"test_log.txt"
+retValue = sgp4.OpenLogFile(fn)
+assert retValue == 0  # successfully set log file
+
+sgp4.LogMessage(b"Test log message from Python")
+sgp4.LogMessage(b"Another log message")
+# make sure do this
+sgp4.CloseLogFile()
+
+# test content of log file
+with open(fn, "r") as f:
+    log_content = f.read()
+    assert "Test log message from Python" in log_content
+    assert "Another log message" in log_content
+```
+
+#### MOIC user input data
+
+Data file with the format of "AS_MOIC 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0" can be loaded by DllMainLoadFile function, and then the data can be retrieved by GetMOICData function. Maximum to 128 numerical data can be handled by the MOIC data file. The following code snippet shows how to load a MOIC data file and retrieve the data:
+
+```python
+filename = tempfile.NamedTemporaryFile(delete=False).name
+data = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]
+data_str = ", ".join(map(str, data))
+with open(filename, "w") as f:
+    f.write(f"AS_MOIC {data_str}\n")
+fn = create_string_buffer(filename.encode('utf-8'), 512)
+retValue = sgp4.DllMainLoadFile(fn)
+assert retValue == 0  # successfully loaded
+moic_data = CreateCArray(c_double, [10])
+sgp4.GetMOICData(10, moic_data)
+print(moic_data[:10])  # print first 10 values for verification
+assert list(moic_data[:10]) == data
+```
+
+### EnvConst
+
+### TimeFunc
+
+### AstroFunc
+
+### ExtEphem/TLE/SpVec/VCM
+
+### Sensor/Obs
+
+### Sgp4Prop
+
+### ElOps
+
+### SatState
