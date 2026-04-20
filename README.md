@@ -208,7 +208,23 @@ And there are 3 other constants related to earth fundamental parameters:
 
 #### Example: Sun-synchronous orbit
 
-Sun synchronous orbit is driven by the precession of the orbit plane, which is caused by the J2 perturbation. The following table shows the inclination of sun-synchronous orbit at different altitudes:
+Actually, Earth is not a perfect sphere, it is an oblate spheroid. The equatorial radius is larger than the polar radius.
+
+![oblate_earth](imgs/oblate_earth.png)
+
+The difference between the equatorial and polar radius is only about 21 km, the above figure exaggerates the difference for better visualization, a factor of 60 is applied to the difference in the above figure.
+
+[Oblate Earth visualization](scripts/oblate_earth.py)
+
+This difference is expressed as flattening factor:
+
+![flattening](imgs/ff.png)
+
+J2 is closely related to the flattening factor, and it is defined in WGS84 as:
+
+![J2](imgs/J2.png)
+
+Sun synchronous orbit is driven mainly by the precession of the orbit plane, which is caused by the J2 perturbation. The following table shows the inclination of sun-synchronous orbit at different altitudes:
 
 ![sun_sync](imgs/sun_sync.png)
 
@@ -225,7 +241,9 @@ Sun synchronous orbit is driven by the precession of the orbit plane, which is c
 |     900.0000 |           99.0333 |
 |    1000.0000 |           99.4792 |
 
-[Sun-synchronous orbit](scripts/sun_sync.py)
+[Sun-synchronous orbit calculation](scripts/sun_sync.py)
+
+![Results](imgs/sun_sync_inclination.png)
 
 ### TimeFunc
 
