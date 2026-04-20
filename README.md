@@ -247,6 +247,24 @@ Sun synchronous orbit is driven mainly by the precession of the orbit plane, whi
 
 ### TimeFunc
 
+- TAI, Temps Atomique International, TAI is currently ahead of UTC by 37 seconds, TAI is always ahead of GPS by 19 seconds.
+- GPS, Global Positioning System time, GPS time was zero at 0h 6-Jan-1980 and since it is not perturbed by leap seconds GPS is now ahead of UTC by 18 seconds
+- UTC, UTC, Coordinated Universal Time, popularly known as GMT (Greenwich Mean Time), or Zulu time.
+- UT/UT0/UT1, Universal time. Defined by the Earth's rotation, formerly determined by astronomical observations but today GPS satellites are used instead.  This time scale is slightly irregular.  There are several different definitions of UT, but the difference between them is always less than about 0.03 s.UT0, "raw", uncorrected UT as derived from meridian circle observations or from more modern methods involving GPS satellites. UT1, UT0 corrected for polar wandering - usually one means UT1 when saying UT.
+- MSE, minutes since epoch
+- ds50UTC, days since 1950 Jan 0.0 UTC
+
+referenece :
+
+- [Time scales](https://www.stjarnhimlen.se/comp/time.html)
+- [gpsclock](http://www.leapsecond.com/java/gpsclock.htm)
+
+Time represented different forms, and two crucial parts, zero and unit of counting.
+
+| Name    | zero      | unit | type   |
+|---------|-----------|------|--------|
+| ds50UTC | 1950, UTC | days | double |
+
 ### AstroFunc
 
 ### ExtEphem/TLE/SpVec/VCM
