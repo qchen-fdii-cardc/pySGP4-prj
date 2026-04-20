@@ -162,6 +162,14 @@ def test_env_get_geo_const():
     print(table)
     table.to_csv("geo_const_table.csv", index=False)
 
+    # format a markdown table of the table
+    md = '| ' + ' | '.join(table.columns) + ' |\n'
+    md += '| ' + ' | '.join(['---'] * len(table.columns)) + ' |\n'
+    for _, row in table.iterrows():
+        md += '| ' + ' | '.join(str(x) for x in row.values) + ' |\n'
+    print("\nMarkdown Table:\n")
+    print(md)
+
 
 def test_set_get_geo():
     geo_strs = [b"WGS-72", b"WGS72", b"72", b"WGS-84", b"WGS84", b"84", b"EGM-96", b"EGM96", b"96",

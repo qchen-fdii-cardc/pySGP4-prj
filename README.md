@@ -162,6 +162,71 @@ assert list(moic_data[:10]) == data
 
 ### EnvConst
 
+There are 8 geodetic models available in the SGP4 library, and each geodetic model has a set of constants. The following table shows the constants for each geodetic model:
+
+| GeoModel | FF | J2 | J3 | J4 | KE | KMPER | RPTIM | CK2 | CK4 | KS2EK | THDOT | J5 | MU |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| WGS-72 | 0.003352779454167505 | 0.001082616 | -2.53881e-06 | -1.65597e-06 | 0.07436691613317341 | 6378.135 | 0.0043752690880113 | 0.000541308 | 6.209887499999999e-07 | 0.1264962848571814 | 0.05883354205754931 | -2.184827e-07 | 398600.8 |
+| WGS-84 | 0.0033528106647474805 | 0.00108263 | -2.5321531e-06 | -1.6109876e-06 | 0.07436685316871385 | 6378.137 | 0.0043752690880113 | 0.000541315 | 6.0412035e-07 | 0.12649635229263637 | 0.0588335918703627 | -2.3578565e-07 | 398600.5 |
+| EGM-96 | 0.003352819752990295 | 0.00108262668355315 | -2.53265648533224e-06 | -1.619621591367e-06 | 0.07436685995417885 | 6378.1363 | 0.0043752690880113 | 0.00054131334177655 | 6.07358096762625e-07 | 0.12649635463367767 | 0.05883358650220168 | -2.27296082868698e-07 | 398600.4415 |
+| EGM-08 | 0.003352819752990295 | 0.00108262617385222 | -2.53241051856772e-06 | -1.61989759991697e-06 | 0.07436685995417885 | 6378.1363 | 0.0043752690880113 | 0.00054131308692611 | 6.074615999688638e-07 | 0.12649635463367764 | 0.05883358650220168 | -2.27753590730836e-07 | 398600.4415 |
+| JGM2   | 0.0033528106647474805 | 0.00108262692563881 | -2.53230781819177e-06 | -1.6204299e-06 | 0.07436685995417885 | 6378.1363 | 0.0043752690880113 | 0.000541313462819405 | 6.076612125e-07 | 0.12649635463367767 | 0.05883358650220168 | 0.0 | 398600.4415 |
+| SEM68R | 0.003352891869237217 | 0.001082621 | -2.627e-06 | -1.583e-06 | 0.0743667785 | 6378.145 | 0.0043752690880113 | 0.0005413105 | 5.93625e-07 | 0.126496320640168 | 0.05883365094282389 | 0.0 | 398601.199437963 |
+| GEM5   | 0.003352835660760088 | 0.001082629 | -2.5412e-06 | -1.6089e-06 | 0.0743666129867 | 6378.155 | 0.0043752690880113 | 0.0005413145 | 6.033375e-07 | 0.12649640384753477 | 0.05883378188534402 | 0.0 | 398601.299998451 |
+| GEM9   | 0.003352835660760088 | 0.00108262708 | -2.5359e-06 | -1.62462e-06 | 0.0743668137601 | 6378.14 | 0.0043752690880113 | 0.00054131354 | 6.092325e-07 | 0.126496359827421 | 0.05883362304757988 | 0.0 | 398600.639998969 |
+
+These 13 constants are defined as follows:
+
+| Name | Index | Description |
+| --- | --- | --- |
+| XF_GEOCON_FF | 1 | Earth flattening (reciprocal, unitless) |
+| XF_GEOCON_J2 | 2 | J2 (unitless) |
+| XF_GEOCON_J3 | 3 | J3 (unitless) |
+| XF_GEOCON_J4 | 4 | J4 (unitless) |
+| XF_GEOCON_KE | 5 | Ke (er**1.5/min) |
+| XF_GEOCON_KMPER | 6 | Earth radius (km/er) |
+| XF_GEOCON_RPTIM | 7 | Earth rotation rate w.r.t. fixed equinox (rad/min) |
+| XF_GEOCON_CK2 | 8 | J2/2 (unitless) |
+| XF_GEOCON_CK4 | 9 | -3/8 J4 (unitless) |
+| XF_GEOCON_KS2EK | 10 | Converts km/sec to er/kem |
+| XF_GEOCON_THDOT | 11 | Earth rotation rate w.r.t. fixed equinox (rad/kemin) |
+| XF_GEOCON_J5 | 12 | J5 (unitless) |
+| XF_GEOCON_MU | 13 | Gravitational parameter km^3/(solar s)^2 |
+
+And there are 3 other constants related to earth fundamental parameters:
+
+| Name | Index | Description |
+| --- | --- | --- |
+| XF_FKCON_C1 | 1 | Earth rotation rate w.r.t. moving equinox (rad/day) |
+| XF_FKCON_C1DOT | 2 | Earth rotation acceleration(rad/day**2) |
+| XF_FKCON_THGR70 | 3 | Greenwich angle (1970 rad) |
+
+| FKModel | C1 | C1DOT | THGR70 |
+| --- | --- | --- | --- |
+| FK4 | 0.017203 | 0.0 | 1.732131 |
+| FK5 | 0.017203 | 0.0 | 1.732134 |
+
+#### Example: Sun-synchronous orbit
+
+Sun synchronous orbit is driven by the precession of the orbit plane, which is caused by the J2 perturbation. The following table shows the inclination of sun-synchronous orbit at different altitudes:
+
+![sun_sync](imgs/sun_sync.png)
+
+| Height in km | Inclination (deg) |
+|--------------|-------------------|
+|     100.0000 |           95.9958 |
+|     200.0000 |           96.3273 |
+|     300.0000 |           96.6719 |
+|     400.0000 |           97.0300 |
+|     500.0000 |           97.4017 |
+|     600.0000 |           97.7876 |
+|     700.0000 |           98.1879 |
+|     800.0000 |           98.6030 |
+|     900.0000 |           99.0333 |
+|    1000.0000 |           99.4792 |
+
+[Sun-synchronous orbit](scripts/sun_sync.py)
+
 ### TimeFunc
 
 ### AstroFunc
