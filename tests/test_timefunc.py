@@ -1,4 +1,19 @@
 from pysgp4 import timefunc
+import pysgp4 as sgp4
+from ctypes import create_string_buffer
+
+
+def test_coverage():
+    funcs = [func for func in dir(sgp4.TimeFunc) if not func.startswith("_")]
+    print("Testing coverage of TimeFunc functions:")
+    for func in funcs:
+        print(f"Testing {func}...")
+        getattr(sgp4, func)  # Just call the function to ensure it's accessible
+    py_funcs = [func for func in dir(
+        sgp4.timefunc) if not func.startswith("_")]
+
+    print(
+        f"\n{len(funcs)} functions in TimeFunc, {len(py_funcs)} functions in timefunc.py")
 
 
 def test_utc2correction():

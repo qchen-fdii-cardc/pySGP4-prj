@@ -3,7 +3,7 @@ from numpy import cos, pi, radians, sin, tan, sqrt
 import pysgp4
 from ctypes import *
 from pysgp4 import *
-from pysgp4.AstroUtils import *
+from pysgp4._wrapper.AstroUtils import *
 
 from typing import *
 

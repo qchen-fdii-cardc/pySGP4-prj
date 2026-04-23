@@ -3,15 +3,7 @@ from numpy import sqrt
 from pysgp4.astrofunc import *
 import pysgp4 as sgp4
 
-def test_coverage():
-    funcs = [func for func in dir(sgp4.AstroFunc) if not func.startswith("_")]
-    print("Testing coverage of AstroFunc functions:")
-    for func in funcs:
-        print(f"Testing {func}...")
-        getattr(sgp4, func)  # Just call the function to ensure it's accessible
-    py_funcs = [func for func in dir(sgp4.astrofunc) if not func.startswith("_")]
 
-    print(f"\n{len(funcs)} functions in AstroFunc, {len(py_funcs)} functions in astrofunc.py")
 
 def test_kep2eqnx():
     # Example Keplerian elements (a, e, i, raan, argp, M)

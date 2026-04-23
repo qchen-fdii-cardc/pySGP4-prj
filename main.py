@@ -19,7 +19,7 @@ import sys
 import time
 from ctypes import *
 
-from pysgp4.AstroUtils import *
+from pysgp4._wrapper.AstroUtils import *
 # Load and initialize dll's using the new pysgp4 lazy-loading interface
 import pysgp4
 

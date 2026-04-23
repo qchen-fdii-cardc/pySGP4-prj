@@ -1,11 +1,37 @@
 import pysgp4 as sgp4
 from ctypes import create_string_buffer
 import pandas as pd
+from pysgp4 import envconst
+
+
+def test_coverage():
+    funcs = [func for func in dir(sgp4.EnvConst) if not func.startswith("_")]
+    for func in funcs:
+        assert hasattr(
+            sgp4, func), f"Function {func} is not accessible in pysgp4 module"
+
+    py_funcs = [func for func in dir(
+        sgp4.envconst) if not func.startswith("_")]
+    for func in py_funcs:
+        assert hasattr(
+            envconst, func), f"Function {func} in envconst.py is not accessible in pysgp4 module"
+
+    # nothing more, nothing less
+    assert len(funcs) == len(
+        py_funcs), f"Number of functions in EnvConst ({len(funcs)}) does not match number of functions in envconst.py ({len(py_funcs)})"
+
+    # py funcs cover all funcs in EnvConst
+    pyfuncnames = [func.lower().replace("_", "") for func in py_funcs]
+    funcnames = [func.lower().removeprefix("env").removeprefix("get")
+                 for func in funcs]
+    for pyf in pyfuncnames:
+        assert pyf in funcnames, f"Function {pyf} in envconst.py does not have a corresponding function in EnvConst"
 
 
 def test_env_save_file():
     # filename = create_string_buffer(b"test_env_const.txt", 256)
-    retValue = sgp4.EnvSaveFile(b"test_env_const.txt", 0, 0)
+    # retValue = sgp4.EnvSaveFile(b"test_env_const.txt", 0, 0)
+    retValue = envconst.save_file("test_env_const.txt", 0, 0)
     assert retValue == 0  # successfully saved
 
 

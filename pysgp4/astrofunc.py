@@ -3,11 +3,11 @@ from typing import List, Tuple
 
 from numpy.typing import ArrayLike
 
-from .DllMainWrapper import LoadDllMainDll
-from .EnvConstWrapper import LoadEnvConstDll
-from .TimeFuncWrapper import LoadTimeFuncDll
-from .AstroFuncWrapper import LoadAstroFuncDll, XA_KEP_SIZE, XA_CLS_SIZE, XA_EQNX_SIZE
-from .AstroUtils import CreateCArray, c_double, c_int
+from ._wrapper.DllMainWrapper import LoadDllMainDll
+from ._wrapper.EnvConstWrapper import LoadEnvConstDll
+from ._wrapper.TimeFuncWrapper import LoadTimeFuncDll
+from ._wrapper.AstroFuncWrapper import LoadAstroFuncDll, XA_KEP_SIZE, XA_CLS_SIZE, XA_EQNX_SIZE
+from ._wrapper.AstroUtils import CreateCArray, c_double, c_int
 
 DllMain = LoadDllMainDll()
 EnvConst = LoadEnvConstDll()

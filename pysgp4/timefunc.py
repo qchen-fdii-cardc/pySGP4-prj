@@ -1,9 +1,9 @@
 from ctypes import create_string_buffer
 
-from .DllMainWrapper import LoadDllMainDll
-from .EnvConstWrapper import LoadEnvConstDll
-from .TimeFuncWrapper import LoadTimeFuncDll
-from .AstroUtils import CreateCArray, c_double, c_int
+from ._wrapper.DllMainWrapper import LoadDllMainDll
+from ._wrapper.EnvConstWrapper import LoadEnvConstDll
+from ._wrapper.TimeFuncWrapper import LoadTimeFuncDll
+from ._wrapper.AstroUtils import CreateCArray, c_double, c_int
 
 DllMain = LoadDllMainDll()
 EnvConst = LoadEnvConstDll()

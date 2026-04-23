@@ -1,5 +1,5 @@
 import tempfile
-from pysgp4.AstroUtils import CreateCArray, c_double
+from pysgp4._wrapper.AstroUtils import CreateCArray, c_double
 import pysgp4 as sgp4
 from ctypes import create_string_buffer
 

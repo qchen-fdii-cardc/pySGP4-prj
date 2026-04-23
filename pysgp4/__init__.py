@@ -1,21 +1,21 @@
-from .AstroUtils import *
+from ._wrapper.AstroUtils import *
 import platform
 import os
 
 # Constants defined in wrappers
-from .DllMainWrapper import *
-from .EnvConstWrapper import *
-from .TimeFuncWrapper import *
-from .AstroFuncWrapper import *
-from .ExtEphemWrapper import *
-from .TleWrapper import *
-from .SpVecWrapper import *
-from .VcmWrapper import *
-from .SensorWrapper import *
-from .Sgp4PropWrapper import *
-from .ElOpsWrapper import *
-from .SatStateWrapper import *
-from .ObsWrapper import *
+from ._wrapper.DllMainWrapper import *
+from ._wrapper.EnvConstWrapper import *
+from ._wrapper.TimeFuncWrapper import *
+from ._wrapper.AstroFuncWrapper import *
+from ._wrapper.ExtEphemWrapper import *
+from ._wrapper.TleWrapper import *
+from ._wrapper.SpVecWrapper import *
+from ._wrapper.VcmWrapper import *
+from ._wrapper.SensorWrapper import *
+from ._wrapper.Sgp4PropWrapper import *
+from ._wrapper.ElOpsWrapper import *
+from ._wrapper.SatStateWrapper import *
+from ._wrapper.ObsWrapper import *
 
 # Dealing with DLL files
 
