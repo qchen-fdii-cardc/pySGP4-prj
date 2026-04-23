@@ -117,6 +117,21 @@ The v9 SGP4 library is composed of several components. Only part of them are not
 
 ![arch](imgs/V9_architect.png)
 
+Following the dependency of the components, we'd better arrange the Python wrapper with the following order for those components that are not export-controlled, Except for Sgp4Prop, which is source code export controlled, and dynamics dll is included in the toolbox.
+
+1. DllMain
+2. EnvConst
+3. TimeFunc
+4. AstroFunc
+5. ExtEphem/TLE/SpVec/VCM
+6. Sgp4Prop
+7. ElOps
+8. SatState
+9. Sensor
+10. Obs
+
+![pySGP4](imgs/V9_architect-not-controlled.png)
+
 ### DllMain
 
 #### Logging
